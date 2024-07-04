@@ -10,8 +10,8 @@ using System.Threading.Tasks;
 namespace LogicLayer.Services
 {
     public class ChatService
-    {
-    {
+    
+   {
         private readonly IUserRepository _userRepository;
         private readonly IChatRepository _chatRepository;
 
@@ -57,10 +57,25 @@ namespace LogicLayer.Services
             
             _chatRepository.Insert(newChat);
         }
-        public List<Chat> GetChatsByName(int userId, string chatName)
+        public List<Chat> GetAvailableChatsByName(int userId, string chatName)
         {
-            return _chatRepository.Get();
+            var user = _userRepository.FindById(userId);
+
+            return _chatRepository.Get((item)=>item.ChatName.Contains(chatName) && item.Users.Contains(user)).ToList();
         }
 
+        public void ConnectToChat(int userId, int chatId)
+        {
+            _chatRepository.AddUserToChat(chatId, userId);
+        }
+        public void LeaveFromChat(int userId, int chatId)
+        {
+            _chatRepository.RemoveUserFromChat(chatId, userId);
+        }
+        public void DeleteChat(int userId, int chatId)
+        {
+            var chats = this._chatRepository.Get((item) => item.UserCreatorId == userId).ToList().Where(x=>x.Id==chatId);
+            _chatRepository.Delete(chats.FirstOrDefault());
+        }
     }
 }

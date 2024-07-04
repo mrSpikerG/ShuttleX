@@ -13,5 +13,7 @@ namespace DataAccessLayer.Repositories
         public UserRepository(DatabaseContext context) : base(context)
         {
         }
+
+       
     }
 }

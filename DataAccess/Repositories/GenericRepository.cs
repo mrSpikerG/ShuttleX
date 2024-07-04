@@ -14,7 +14,7 @@ namespace DataAccessLayer.Repositories
     public class GenericRepository<T> : IGenericRepoitory<T> where T : class
     {
 
-        protected DbContext Context { get; private set; }
+        protected DatabaseContext Context { get; private set; }
         protected DbSet<T> Set { get; private set; }
 
         public GenericRepository(DatabaseContext context)

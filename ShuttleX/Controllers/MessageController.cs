@@ -18,7 +18,7 @@ namespace ShuttleX.Controllers
         public IActionResult Post(int userId,int chatId,string content)
 
         {            
-            this._messageService.cr
+            //this._messageService.cr
             return Ok(this._messageService.GetAll());
         }
 

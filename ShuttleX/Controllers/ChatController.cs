@@ -21,8 +21,8 @@ namespace ShuttleX.Controllers
             return Ok();
         }
 
-        [HttpGet]
-        public IActionResult Get(int userId)
+        [HttpGet("GetAvailableChatsByName")]
+        public IActionResult Get(int userId,string chatName)
         {
             _chatService.CreateChat(userId, chatName);
             return Ok();

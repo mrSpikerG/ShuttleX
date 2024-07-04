@@ -9,5 +9,7 @@ namespace DataAccessLayer.Interfaces
 {
     public interface IChatRepository : IGenericRepoitory<Chat>
     {
+        void AddUserToChat(int chatId, int userId);
+        void RemoveUserFromChat(int chatId, int userId);
     }
 }

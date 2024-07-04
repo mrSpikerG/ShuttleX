@@ -9,5 +9,6 @@ namespace DataAccessLayer.Interfaces
 {
     public interface IUserRepository : IGenericRepoitory<User>
     {
+     
     }
 }
