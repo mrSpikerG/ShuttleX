@@ -61,7 +61,14 @@ namespace LogicLayer.Services
         {
             var user = _userRepository.FindById(userId);
 
-            return _chatRepository.Get((item)=>item.ChatName.Contains(chatName) && item.Users.Contains(user)).ToList();
+            return _chatRepository.Get((item)=>item.ChatName.Contains(chatName) && !item.Users.Contains(user)).ToList();
+        }
+
+        public List<Chat> GetUserChatsByName(int userId, string chatName)
+        {
+            var user = _userRepository.FindById(userId);
+
+            return _chatRepository.Get((item) => item.ChatName.Contains(chatName) && item.Users.Contains(user)).ToList();
         }
 
         public void ConnectToChat(int userId, int chatId)

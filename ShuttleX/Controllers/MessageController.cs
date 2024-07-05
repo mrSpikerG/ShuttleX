@@ -1,5 +1,7 @@
 ﻿using LogicLayer.Services;
 using Microsoft.AspNetCore.Mvc;
+using Microsoft.AspNetCore.SignalR;
+using ShuttleX.SignalR;
 
 namespace ShuttleX.Controllers
 {
@@ -8,6 +10,7 @@ namespace ShuttleX.Controllers
     public class MessageController : ControllerBase
     {
         private readonly MessageService _messageService;
+        private readonly IHubContext<ChatHub> _hubContext;
 
         public MessageController(MessageService messageService)
         {

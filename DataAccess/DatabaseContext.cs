@@ -19,6 +19,24 @@ namespace DataAccessLayer
         {
             base.OnModelCreating(modelBuilder);
 
+            modelBuilder.Entity<User>(entity =>
+            {
+                entity.Property(e => e.TimeOfCreation)
+                      .HasDefaultValueSql("GETDATE()");
+            });
+
+            modelBuilder.Entity<Message>(entity =>
+            {
+                entity.Property(e => e.TimeOfCreation)
+                      .HasDefaultValueSql("GETDATE()");
+            });
+
+            modelBuilder.Entity<Chat>(entity =>
+            {
+                entity.Property(e => e.TimeOfCreation)
+                      .HasDefaultValueSql("GETDATE()");
+            });
+
             modelBuilder.Entity<Message>()
                  .HasOne(m => m.UserCreator)
                  .WithMany(m=>m.Messages)
@@ -35,7 +53,7 @@ namespace DataAccessLayer
                 .HasMany(c => c.Messages)
                 .WithOne(m => m.Chat)
                 .HasForeignKey(m => m.ChatId)
-                .OnDelete(DeleteBehavior.Restrict);
+                .OnDelete(DeleteBehavior.Cascade);
 
             modelBuilder.Entity<User>()
                 .HasMany(u => u.Chats)
