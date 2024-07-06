@@ -1,4 +1,5 @@
-﻿using DataAccessLayer.Interfaces;
+﻿using DataAccessLayer.DTOs;
+using DataAccessLayer.Interfaces;
 using DataAccessLayer.Models;
 using DataAccessLayer.Repositories;
 using Microsoft.AspNetCore.SignalR;
@@ -22,30 +23,7 @@ namespace LogicLayer.Services
             _chatRepository = chatRepository;
             _userRepository = userRepository;
         }
-        public Message GetById(int id)
-        {
-            return _messageRepository.FindById(id);
-        }
-
-        public IEnumerable<Message> GetAll()
-        {
-            return _messageRepository.Get();
-        }
-
-        public void Create(Message message)
-        {
-            _messageRepository.Insert(message);
-        }
-
-        public void Update(Message message)
-        {
-            _messageRepository.Update(message);
-        }
-
-        public void Delete(Message message)
-        {
-            _messageRepository.Delete(message);
-        }
+   
         public void CreateMessage(int userId, int chatId, string content)
         {
 
@@ -69,23 +47,36 @@ namespace LogicLayer.Services
             _messageRepository.Insert(newMessage);
 
         }
-        public List<Message> GetMessagesByChat(int userId, int chatId)
+        public List<MessageDTO> GetMessagesByChat(int userId, int chatId)
         {
             var user = _userRepository.FindById(userId);
-            var chat = _chatRepository.FindById(chatId);
 
-            if (chat == null)
+            var chat = _chatRepository.GetChatsWithUsers((item) => item.Id == chatId, includeProperties: "Users").ToList();
+            if (chat.Count == 0)
             {
                 throw new Exception("Chat not Exists");
             }
 
-            if (!chat.Users.Contains(user))
+            if (!chat[0].Users.Contains(user))
             {
                 throw new Exception("This chat doesn't contain this user");
             }
 
-            return _messageRepository.Get((item) => item.ChatId == chatId).ToList();
-            
+            List<MessageDTO> messageDTOs = new List<MessageDTO>();
+            var temp = _messageRepository.Get((item) => item.ChatId == chatId).ToList();
+            foreach (var item in temp)
+            {
+                messageDTOs.Add(new MessageDTO()
+                {
+                    Id = item.Id,
+                    Content = item.Content,
+                    TimeOfCreation = item.TimeOfCreation,
+                    ChatId = item.ChatId,
+                    UserCreatorId = item.UserCreatorId
+                });
+            }
+            return messageDTOs;
+
         }
     }
 }

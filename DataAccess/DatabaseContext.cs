@@ -41,13 +41,13 @@ namespace DataAccessLayer
                  .HasOne(m => m.UserCreator)
                  .WithMany(m=>m.Messages)
                  .HasForeignKey(m => m.UserCreatorId)
-                 .OnDelete(DeleteBehavior.Restrict);
+                 .OnDelete(DeleteBehavior.ClientSetNull);
 
             modelBuilder.Entity<User>()
                 .HasMany(u => u.ChatCreateds)
                 .WithOne(m => m.UserCreator)
                 .HasForeignKey(m => m.UserCreatorId)
-                .OnDelete(DeleteBehavior.Restrict);
+                .OnDelete(DeleteBehavior.ClientSetNull);
 
             modelBuilder.Entity<Chat>()
                 .HasMany(c => c.Messages)

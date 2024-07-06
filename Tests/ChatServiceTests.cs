@@ -9,7 +9,7 @@ namespace ShuttleX.Tests
     public class ChatServiceTests
     {
         [Fact]
-        public void CreateMessage_ValidInput_CallsInsertOnMessageRepository()
+        public void CreateMessage_ValidInput()
         {
             // Arrange
             var userId = 1;

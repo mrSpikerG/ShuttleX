@@ -20,21 +20,21 @@ namespace ShuttleX.Controllers
         }
 
         [HttpGet]
-        public IActionResult Get()
+        public IActionResult Read()
         {
             return Ok(this._userService.GetAll());
         }
 
         // GET api/<ChatController>/5
         [HttpGet("{id}")]
-        public IActionResult Get(int id)
+        public IActionResult Read(int id)
         {
             return Ok(this._userService.GetById(id));
         }
 
         // POST api/<ChatController>
         [HttpPost]
-        public IActionResult Post([FromBody] UserDTO user)
+        public IActionResult Create([FromBody] UserDTO user)
         {
             try
             {
@@ -57,7 +57,7 @@ namespace ShuttleX.Controllers
 
         // PUT api/<ChatController>/5
         [HttpPut("{id}")]
-        public IActionResult Put(int id, [FromBody] UserDTO user)
+        public IActionResult Update(int id, [FromBody] UserDTO user)
         {
             try
             {

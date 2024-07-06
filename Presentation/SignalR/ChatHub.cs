@@ -8,20 +8,20 @@ namespace ShuttleX.SignalR
     {
         private readonly ChatService _chatService;
         private readonly MessageService _messageService;
+        private readonly ILogger<ChatHub> _logger;
 
-        public ChatHub(ChatService chatService, MessageService messageService)
+        public ChatHub(ChatService chatService, MessageService messageService, ILogger<ChatHub> logger)
         {
             _chatService = chatService;
             _messageService = messageService;
+            _logger = logger;
         }
 
-        public async Task Send(string message, string userName)
-        {
-            await Clients.All.SendAsync("Receive", message, userName);
-        }
+
         public async Task SendMessage(int chatId, int userId, string messageContent)
         {
-             _messageService.CreateMessage(userId, chatId, messageContent);
+
+            _messageService.CreateMessage(userId, chatId, messageContent);
             await Clients.Group($"chat_{chatId}").SendAsync("ReceiveMessage", userId, messageContent);
         }
         public async Task JoinChat(int chatId, int userId)

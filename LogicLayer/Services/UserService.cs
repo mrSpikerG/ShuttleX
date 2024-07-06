@@ -10,10 +10,14 @@ namespace LogicLayer.Services
 {
     public class UserService
     {
+        private readonly IMessageRepository _messageRepository;
         private readonly IUserRepository _userRepository;
+        private readonly IChatRepository _chatRepository;
 
-        public UserService(IUserRepository userRepository)
+        public UserService(IMessageRepository messageRepository, IChatRepository chatRepository, IUserRepository userRepository)
         {
+            _messageRepository = messageRepository;
+            _chatRepository = chatRepository;
             _userRepository = userRepository;
         }
         public User GetById(int id)
@@ -38,6 +42,16 @@ namespace LogicLayer.Services
 
         public void DeleteUser(User user)
         {
+            
+            foreach(var item in _messageRepository.Get(item => item.UserCreatorId == user.Id))
+            { 
+                _messageRepository.Delete(item);    
+            }
+            foreach (var item in _chatRepository.Get(item => item.UserCreatorId == user.Id))
+            {
+                _chatRepository.Delete(item);
+            }
+
             _userRepository.Delete(user);
         }
     }

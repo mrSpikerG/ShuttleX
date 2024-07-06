@@ -4,6 +4,7 @@ using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Linq.Expressions;
 using System.Text;
 using System.Threading.Tasks;
 
@@ -37,6 +38,22 @@ namespace DataAccessLayer.Repositories
                 chat.Users.Remove(user);
                 Context.SaveChanges();
             }
+        }
+        public IEnumerable<Chat> GetChatsWithUsers(Expression<Func<Chat, bool>> filter = null, string includeProperties = "")
+        {
+            IQueryable<Chat> query = Context.Chats;
+
+            if (filter != null)
+            {
+                query = query.Where(filter);
+            }
+
+            foreach (var includeProperty in includeProperties.Split(new char[] { ',' }, StringSplitOptions.RemoveEmptyEntries))
+            {
+                query = query.Include(includeProperty);
+            }
+            return query.ToList();
+
         }
     }
 }

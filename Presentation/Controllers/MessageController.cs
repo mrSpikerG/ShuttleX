@@ -10,19 +10,25 @@ namespace ShuttleX.Controllers
     public class MessageController : ControllerBase
     {
         private readonly MessageService _messageService;
-        private readonly IHubContext<ChatHub> _hubContext;
 
         public MessageController(MessageService messageService)
         {
             _messageService = messageService;
         }
 
-        [HttpPost]
-        public IActionResult Post(int userId,int chatId,string content)
+        [HttpGet]
+        public IActionResult Get(int userId, int chatId)
+        {
+            try
+            {
 
-        {            
-            //this._messageService.cr
-            return Ok(this._messageService.GetAll());
+                var temp = this._messageService.GetMessagesByChat(userId, chatId);
+
+                return Ok(temp);
+            } catch (Exception ex)
+            {
+                return BadRequest(ex.Message);
+            }
         }
 
     }
